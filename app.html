@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AFC Elite | Athlete Portal</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root { --gold: #C5A059; --bg: #050505; --card: #111; }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; padding: 20px; }
+        .card { background: var(--card); border: 1px solid #222; border-radius: 20px; padding: 25px; margin-bottom: 20px; }
+        h1 { color: var(--gold); font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px; }
+        .input-box { width: 100%; padding: 15px; background: #000; border: 1px solid #333; color: #fff; border-radius: 12px; margin-top: 10px; }
+        .btn-gen { width: 100%; padding: 18px; background: var(--gold); border: none; border-radius: 12px; font-weight: 900; margin-top: 15px; cursor: pointer; }
+        .macro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .macro-item { background: #000; padding: 15px; border-radius: 10px; border-left: 3px solid var(--gold); }
+    </style>
+</head>
+<body>
+
+    <header style="text-align: center; margin-bottom: 30px;">
+        <h1>AFC <span style="color:#fff">Elite</span></h1>
+        <p style="font-size: 0.7rem; color: #666; letter-spacing: 1px;">AUTONOMOUS COACHING SYSTEM</p>
+    </header>
+
+    <div class="card">
+        <label style="font-size: 0.7rem; color: var(--gold); font-weight: 800;">CURRENT BODY WEIGHT (KG)</label>
+        <input type="number" id="weight" class="input-box" placeholder="e.g. 85">
+        
+        <label style="font-size: 0.7rem; color: var(--gold); font-weight: 800; display:block; margin-top:15px;">GOAL</label>
+        <select id="goal" class="input-box">
+            <option value="shred">30-Day Aggressive Shred</option>
+            <option value="peak">Final 7-Day Peak Week</option>
+        </select>
+
+        <button class="btn-gen" onclick="generateProtocol()">INITIALIZE GENERATION</button>
+    </div>
+
+    <div id="result" class="card" style="display:none;">
+        <h2 style="font-size: 0.8rem; color: var(--gold);">GENERATED PROTOCOL</h2>
+        <div class="macro-grid" id="macroDisplay"></div>
+        <div id="peakDisplay" style="margin-top:20px;"></div>
+        <p style="font-size: 0.65rem; color: #555; margin-top: 20px; border-top: 1px solid #222; padding-top: 10px;">
+            🛡️ MANDATORY: TUDCA 500mg | Astragalus 3000mg. <br>
+            ⚠️ IDENTITY LOCK: Strict Facial Consistency Protocol Active.
+        </p>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>
