@@ -1,0 +1,149 @@
+/* --- AFC BRAND IDENTITY SYSTEM 2026 --- */
+:root {
+  --gold: #C5A059;
+  --gold-glow: rgba(197, 160, 89, 0.3);
+  --bg-black: #050505;
+  --card-bg: #111111;
+  --border-dim: #222222;
+  --text-main: #ffffff;
+  --text-dim: #888888;
+  --success: #00ff99;
+  --danger: #ff4444;
+}
+
+/* --- Global Reset --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: var(--bg-black);
+  color: var(--text-main);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* --- Typography --- */
+h1, h2, h3, .btn {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 900;
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #C5A059 0%, #F1D38E 50%, #C5A059 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* --- Layout Components --- */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-dim);
+  border-radius: 20px;
+  padding: 30px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* --- Form Elements --- */
+input, select {
+  width: 100%;
+  padding: 15px;
+  background: #000;
+  border: 1px solid var(--border-dim);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+/* --- Buttons --- */
+.btn {
+  display: inline-block;
+  background: var(--gold);
+  color: #000;
+  padding: 18px 35px;
+  border-radius: 50px;
+  text-decoration: none;
+  text-align: center;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, filter 0.2s;
+}
+
+.btn:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--gold);
+  border: 2px solid var(--gold);
+}
+
+/* --- Dashboard Specifics --- */
+.macro-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 15px;
+}
+
+.macro-item {
+  background: #000;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  border-bottom: 3px solid var(--gold);
+}
+
+.macro-item span {
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  display: block;
+}
+
+.macro-item b {
+  font-size: 1.2rem;
+  color: var(--gold);
+}
+
+/* --- Utility --- */
+.text-danger { color: var(--danger); }
+.text-success { color: var(--success); }
+
+/* --- Mobile Nav Sticky --- */
+.mobile-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #000;
+  border-top: 1px solid var(--border-dim);
+  display: flex;
+  justify-content: space-around;
+  padding: 15px 0;
+  z-index: 1000;
+}
