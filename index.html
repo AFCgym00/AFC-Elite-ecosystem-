@@ -20,25 +20,36 @@
         .type-btn { flex: 1; padding: 12px; border: 1px solid #333; background: #000; color: #666; border-radius: 10px; font-weight: 800; cursor: pointer; transition: 0.3s; }
         .type-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(212, 175, 55, 0.05); }
         
-        input { width: 100%; background: #000; border: none; border-bottom: 2px solid #333; padding: 15px; color: #fff; font-size: 1.1rem; text-align: center; margin-bottom: 20px; outline: none; }
+        input { width: 100%; background: #000; border: none; border-bottom: 2px solid #333; padding: 15px; color: #fff; font-size: 1.1rem; text-align: center; margin-bottom: 20px; outline: none; transition: 0.3s; }
+        input:focus { border-bottom-color: var(--gold); }
         .wt-input { font-size: 2.5rem !important; color: var(--gold) !important; font-weight: 900; }
         .btn-main { width: 100%; background: var(--gold); color: #000; padding: 20px; border: none; border-radius: 15px; font-weight: 900; text-transform: uppercase; cursor: pointer; font-size: 1.1rem; }
         
         #results { display: none; margin-top: 30px; }
+        
+        /* PDF Specific Styling */
+        .pdf-header { background: #000; padding: 30px; border-bottom: 5px solid var(--gold); display: flex; justify-content: space-between; align-items: center; text-align: left; }
+        .header-left h1 { font-family: 'Oswald'; font-size: 2.2rem; color: var(--gold); margin: 0; line-height: 1; text-transform: uppercase; }
+        .header-right { text-align: right; font-size: 0.75rem; color: #888; line-height: 1.6; }
+
         .day-block { border: 1px solid #222; border-radius: 20px; margin-bottom: 40px; overflow: hidden; page-break-inside: avoid; background: #000; }
         .day-header { padding: 15px 25px; font-family: 'Oswald'; font-weight: 900; font-size: 1.3rem; display: flex; justify-content: space-between; align-items: center; }
         
         .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); background: #0a0a0a; border-bottom: 1px solid #222; }
         .stat-item { padding: 15px; text-align: center; border-right: 1px solid #1a1a1a; }
         .stat-item b { color: var(--gold); font-size: 1.1rem; }
-        .stat-item small { color: #555; font-weight: 800; text-transform: uppercase; font-size: 0.65rem; }
+        .stat-item small { color: #555; font-weight: 800; text-transform: uppercase; font-size: 0.65rem; display: block; }
 
         .nutrition-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
         .nutrition-table td { padding: 14px 20px; border-bottom: 1px solid #111; color: #ccc; }
-        .nutrition-table td:first-child { color: var(--gold); font-weight: 800; width: 100px; }
+        .nutrition-table td:first-child { color: var(--gold); font-weight: 800; width: 110px; }
 
         .transition-alert { background: #fff; color: #000; padding: 25px; border-radius: 15px; margin: 30px 0; border-left: 10px solid var(--gold); page-break-inside: avoid; }
-        .transition-alert h2 { font-family: 'Oswald'; text-transform: uppercase; margin-bottom: 5px; }
+        .transition-alert h2 { font-family: 'Oswald'; text-transform: uppercase; margin-bottom: 5px; font-size: 1.4rem; }
+
+        .pdf-footer { background: #0a0a0a; padding: 40px 20px; text-align: center; border-top: 1px solid #222; margin-top: 30px; }
+        .footer-logo { font-family: 'Oswald'; color: var(--gold); letter-spacing: 5px; margin-bottom: 10px; font-size: 1.2rem; }
+        .footer-legal { font-size: 0.6rem; color: #444; line-height: 1.4; max-width: 600px; margin: 0 auto; }
     </style>
 </head>
 <body>
@@ -46,7 +57,7 @@
 <header>
     <div class="logo">AzharFitPro</div>
     <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px;">
-        <span style="font-size: 0.7rem; color: #888; letter-spacing: 3px; font-weight: 600;">@Azhar.Fitness_</span>
+        <span style="font-size: 0.7rem; color: #888; letter-spacing: 3px; font-weight: 600;">@AZHAR.FITNESS_</span>
     </div>
     <h1 style="font-family: 'Oswald'; font-size: 1.5rem; color: #fff; text-transform: uppercase;">The Science of <span style="color: var(--gold);">Championship</span> Conditioning</h1>
 </header>
@@ -64,7 +75,7 @@
     </div>
 
     <div id="results">
-        <button onclick="exportPDF()" style="width:100%; padding:15px; background:#fff; color:#000; font-weight:900; border-radius:12px; border:none; margin-bottom:20px; cursor:pointer;">📥 DOWNLOAD MASTER PROTOCOL</button>
+        <button onclick="exportPDF()" style="width:100%; padding:20px; background:#fff; color:#000; font-weight:900; border-radius:12px; border:none; margin-bottom:20px; cursor:pointer; text-transform: uppercase;">📥 Download Master Protocol PDF</button>
         <div id="pdfArea"></div>
     </div>
 </div>
@@ -83,7 +94,7 @@
         const kg = parseFloat(document.getElementById('wt').value);
         
         if(!kg || kg <= 0) {
-            alert("Please enter athlete weight.");
+            alert("Please enter a valid weight.");
             return;
         }
 
@@ -92,56 +103,85 @@
         resultsDiv.style.display = 'block';
         pdfArea.innerHTML = '';
 
-        // Master Multipliers
+        // Master Calculations
         const protein = Math.round(kg * 2.5);
         const fats = Math.round(kg * 0.7);
         let baseCarbs = currentDays === 15 ? kg * 1.5 : kg * 2.5;
 
+        // START HTML: Professional Header
         let html = `
-            <div style="background:#000; padding: 20px; text-align:center; border: 2px solid var(--gold); border-radius: 15px; margin-bottom: 30px;">
-                <h2 style="font-family:'Oswald'; color:var(--gold); font-size:2rem; margin:0;">OFFICIAL PROTOCOL</h2>
-                <p style="letter-spacing:2px; font-size:0.8rem;">FOR: ${name} | TARGET WEIGHT: ${kg}KG</p>
+            <div class="pdf-header">
+                <div class="header-left">
+                    <p style="color: var(--gold); font-weight: 900; letter-spacing: 5px; font-size: 0.6rem; margin-bottom: 5px;">EST. 2026 / ELITE DIVISION</p>
+                    <h1>AZHARFIT<br><span style="color:#fff;">PRO ENGINE</span></h1>
+                </div>
+                <div class="header-right">
+                    <p>Athlete: <span style="color:#fff;">${name}</span></p>
+                    <p>Target: <span style="color:#fff;">${kg} KG</span></p>
+                    <p>ID: <span style="color:var(--gold);">#${Math.floor(1000 + Math.random() * 9000)}</span></p>
+                </div>
             </div>
+            <div style="padding: 20px;">
         `;
 
+        // LOOP: Day Generation
         for (let i = 1; i <= currentDays; i++) {
-            let dailyCarbs = Math.round(baseCarbs * Math.pow(currentDays === 15 ? 0.95 : 0.98, i-1));
+            let taperRate = currentDays === 15 ? 0.95 : 0.98;
+            let dailyCarbs = Math.round(baseCarbs * Math.pow(taperRate, i-1));
             let isRefeed = (currentDays === 30 && i % 7 === 0);
+            let isLastDay = (i === currentDays);
             
-            if (isRefeed) {
-                dailyCarbs = Math.round(kg * 4); // High carb spike
-            }
+            if (isRefeed) dailyCarbs = Math.round(kg * 4);
+            if (isLastDay) dailyCarbs = Math.round(kg * 3.5);
 
+            let cardioMins = isLastDay ? 0 : Math.min(60, 20 + (i * 2));
             let dailyCals = (protein * 4) + (dailyCarbs * 4) + (fats * 9);
+            let waterIntake = isLastDay ? "SIPS ONLY" : (3 + (i * 0.1)).toFixed(1) + "L";
 
             if (i === 1) {
-                html += `<div class="transition-alert"><h2>PHASE 1: DEPLETION</h2><p>Focus on high-volume training. Increase water intake to 4L+.</p></div>`;
-            } else if (i === Math.round(currentDays * 0.7)) {
-                html += `<div class="transition-alert" style="border-left-color:#4d94ff;"><h2>PHASE 2: THE DRY OUT</h2><p>Limit sodium. Cardio should be LISS only. Muscle fullness is the priority.</p></div>`;
+                html += `<div class="transition-alert"><h2>PHASE 1: DEPLETION</h2><p>Focus on high-volume training. Increase water flush.</p></div>`;
+            } else if (isLastDay) {
+                html += `<div class="transition-alert" style="background:var(--gold); color:#000;"><h2>FINAL SHOT: THE PEAK</h2><p>Zero Cardio. Focus on the pump protocol below. Water restricted.</p></div>`;
             }
 
             html += `
-                <div class="day-block">
-                    <div class="day-header" style="background: ${isRefeed ? '#D4AF37' : '#111'}; color: ${isRefeed ? '#000' : '#fff'};">
-                        <span>DAY ${i} ${isRefeed ? '(RE-FEED)' : ''}</span>
-                        <span style="font-size:0.8rem;">H2O: ${(3 + (i*0.1)).toFixed(1)}L</span>
+                <div class="day-block" style="${isLastDay ? 'border: 2px solid var(--gold);' : ''}">
+                    <div class="day-header" style="background: ${isLastDay || isRefeed ? 'var(--gold)' : '#111'}; color: ${isLastDay || isRefeed ? '#000' : '#fff'};">
+                        <span>DAY ${i} ${isLastDay ? '— FINAL SHOT' : (isRefeed ? '(RE-FEED)' : '')}</span>
+                        <span style="font-size:0.8rem;">CARDIO: ${cardioMins}m LISS</span>
                     </div>
                     <div class="stat-grid">
-                        <div class="stat-item"><b>${dailyCals}</b><br><small>Kcal</small></div>
-                        <div class="stat-item"><b>${protein}G</b><br><small>Pro</small></div>
-                        <div class="stat-item"><b>${dailyCarbs}G</b><br><small>Cho</small></div>
-                        <div class="stat-item"><b>${fats}G</b><br><small>Fat</small></div>
+                        <div class="stat-item"><b>${dailyCals}</b><small>Kcal</small></div>
+                        <div class="stat-item"><b>${protein}G</b><small>Pro</small></div>
+                        <div class="stat-item"><b>${dailyCarbs}G</b><small>Cho</small></div>
+                        <div class="stat-item"><b>${waterIntake}</b><small>Water</small></div>
                     </div>
                     <table class="nutrition-table">
-                        <tr><td>MEAL 1</td><td>${Math.round(dailyCarbs * 0.3)}g Carbs + 5 Egg Whites</td></tr>
-                        <tr><td>MEAL 2</td><td>${Math.round(dailyCarbs * 0.2)}g Carbs + 150g Chicken</td></tr>
-                        <tr><td>MEAL 3</td><td>PRE-WORKOUT: 1 Apple + Black Coffee</td></tr>
-                        <tr><td>MEAL 4</td><td>${Math.round(dailyCarbs * 0.4)}g Carbs + 150g White Fish</td></tr>
-                        <tr style="border:none;"><td style="color:#4d94ff;">SUPPS</td><td>Omega 3, Zinc, Magnesium, 5g Creatine</td></tr>
+                        ${isLastDay ? `
+                            <tr><td>6:00 AM</td><td>100g Steak + 3 Whole Eggs + 50g Rice</td></tr>
+                            <tr><td>10:00 AM</td><td>150g White Fish + 80g Cream of Rice + Salt</td></tr>
+                            <tr><td>PRE-SHOT</td><td><strong>PUMP LOAD:</strong> 40g Dark Chocolate + 2 Rice Cakes + Honey</td></tr>
+                        ` : `
+                            <tr><td>MEAL 1</td><td>${Math.round(dailyCarbs * 0.3)}g Carbs + 6 Egg Whites</td></tr>
+                            <tr><td>MEAL 2</td><td>${Math.round(dailyCarbs * 0.2)}g Carbs + 150g Chicken</td></tr>
+                            <tr><td>MEAL 4</td><td>${Math.round(dailyCarbs * 0.4)}g Carbs + 150g White Fish</td></tr>
+                        `}
                     </table>
                 </div>
             `;
         }
+
+        // END HTML: Footer
+        html += `
+            </div>
+            <div class="pdf-footer">
+                <div class="footer-logo">AZHARFITPRO SYSTEMS</div>
+                <div class="footer-legal">
+                    CONFIDENTIAL PERFORMANCE DATA - FOR INTENDED RECIPIENT ONLY<br>
+                    © 2026 AzharFitPro Division. Always consult a physician before extreme dieting.
+                </div>
+            </div>
+        `;
 
         pdfArea.innerHTML = html;
         window.scrollTo({ top: resultsDiv.offsetTop, behavior: 'smooth' });
@@ -150,12 +190,14 @@
     function exportPDF() {
         const element = document.getElementById('pdfArea');
         const name = document.getElementById('custName').value || "Athlete";
-        html2pdf().set({
+        const opt = {
             margin: 10,
-            filename: `AzharFitPro_${name}.pdf`,
-            html2canvas: { scale: 2, backgroundColor: '#050505' },
+            filename: `AzharFitPro_Protocol_${name}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, backgroundColor: '#050505', useCORS: true },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        }).from(element).save();
+        };
+        html2pdf().set(opt).from(element).save();
     }
 </script>
 </body>
