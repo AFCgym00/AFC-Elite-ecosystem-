@@ -2,177 +2,161 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azhar Fitness Center | The Science of Peak Performance</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AzharFitPro | Elite Phase Engine</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --gold: #C5A059;
-            --bg: #050505;
-            --card: #111;
-            --text: #ffffff;
-            --dim: #888;
-        }
+        :root { --gold: #D4AF37; --black: #050505; --card: #111; --red: #ff4d4d; --blue: #4d94ff; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background: var(--black); color: #fff; font-family: 'Inter', sans-serif; }
+        .container { padding: 15px; max-width: 800px; margin: auto; }
+        
+        header { background: #000; border-bottom: 3px solid var(--gold); padding: 40px 20px; text-align: center; margin-bottom: 30px; }
+        .logo { font-family: 'Oswald'; color: var(--gold); font-size: 2.5rem; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 5px; font-weight: 900; }
+        
+        .input-card { background: var(--card); padding: 30px; border-radius: 25px; border: 1px solid #222; text-align: center; margin-bottom: 30px; }
+        .type-selector { display: flex; gap: 10px; margin-bottom: 20px; }
+        .type-btn { flex: 1; padding: 12px; border: 1px solid #333; background: #000; color: #666; border-radius: 10px; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        .type-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(212, 175, 55, 0.05); }
+        
+        input { width: 100%; background: #000; border: none; border-bottom: 2px solid #333; padding: 15px; color: #fff; font-size: 1.1rem; text-align: center; margin-bottom: 20px; outline: none; }
+        .wt-input { font-size: 2.5rem !important; color: var(--gold) !important; font-weight: 900; }
+        .btn-main { width: 100%; background: var(--gold); color: #000; padding: 20px; border: none; border-radius: 15px; font-weight: 900; text-transform: uppercase; cursor: pointer; font-size: 1.1rem; }
+        
+        #results { display: none; margin-top: 30px; }
+        .day-block { border: 1px solid #222; border-radius: 20px; margin-bottom: 40px; overflow: hidden; page-break-inside: avoid; background: #000; }
+        .day-header { padding: 15px 25px; font-family: 'Oswald'; font-weight: 900; font-size: 1.3rem; display: flex; justify-content: space-between; align-items: center; }
+        
+        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); background: #0a0a0a; border-bottom: 1px solid #222; }
+        .stat-item { padding: 15px; text-align: center; border-right: 1px solid #1a1a1a; }
+        .stat-item b { color: var(--gold); font-size: 1.1rem; }
+        .stat-item small { color: #555; font-weight: 800; text-transform: uppercase; font-size: 0.65rem; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', -apple-system, sans-serif;
-            margin: 0;
-            line-height: 1.6;
-        }
+        .nutrition-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .nutrition-table td { padding: 14px 20px; border-bottom: 1px solid #111; color: #ccc; }
+        .nutrition-table td:first-child { color: var(--gold); font-weight: 800; width: 100px; }
 
-        /* HERO SECTION */
-        header {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
-            padding: 0 20px;
-        }
-
-        h1 {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: -2px;
-            margin: 0;
-        }
-
-        h1 span { color: var(--gold); display: block; }
-
-        .tagline {
-            color: var(--dim);
-            max-width: 600px;
-            margin: 20px 0 40px;
-            font-size: 1.1rem;
-        }
-
-        /* CTA BUTTONS */
-        .btn {
-            background: var(--gold);
-            color: #000;
-            padding: 20px 40px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            background: #fff;
-            transform: scale(1.05);
-        }
-
-        /* FEATURES SECTION */
-        .features {
-            padding: 100px 5%;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-
-        .feature-box {
-            background: var(--card);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid #222;
-            transition: 0.3s;
-        }
-
-        .feature-box:hover { border-color: var(--gold); }
-
-        .feature-box h3 { color: var(--gold); margin-bottom: 15px; text-transform: uppercase; }
-
-        /* PRICING SECTION */
-        .pricing {
-            padding: 100px 5%;
-            text-align: center;
-            background: #000;
-        }
-
-        .price-grid {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .price-card {
-            background: var(--card);
-            width: 350px;
-            padding: 50px;
-            border-radius: 30px;
-            border: 1px solid #222;
-        }
-
-        .price-card.featured { border: 2px solid var(--gold); transform: scale(1.05); }
-
-        .price { font-size: 3rem; font-weight: 900; margin: 20px 0; }
-        .price span { font-size: 1rem; color: var(--dim); }
-
-        footer {
-            padding: 50px;
-            text-align: center;
-            border-top: 1px solid #222;
-            font-size: 0.8rem;
-            color: var(--dim);
-        }
+        .transition-alert { background: #fff; color: #000; padding: 25px; border-radius: 15px; margin: 30px 0; border-left: 10px solid var(--gold); page-break-inside: avoid; }
+        .transition-alert h2 { font-family: 'Oswald'; text-transform: uppercase; margin-bottom: 5px; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>AFC <span>ELITE</span></h1>
-        <p class="tagline">Autonomous Coaching for the Modern Athlete. <br> Powered by Scientific Protocols and Real-Time Biological Analysis.</p>
-        <a href="#pricing" class="btn">Start Transformation</a>
-    </header>
+<header>
+    <div class="logo">AzharFitPro</div>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px;">
+        <span style="font-size: 0.7rem; color: #888; letter-spacing: 3px; font-weight: 600;">@Azhar.Fitness_</span>
+    </div>
+    <h1 style="font-family: 'Oswald'; font-size: 1.5rem; color: #fff; text-transform: uppercase;">The Science of <span style="color: var(--gold);">Championship</span> Conditioning</h1>
+</header>
 
-    <section class="features">
-        <div class="feature-box">
-            <h3>01. The 2.2g Lock</h3>
-            <p>Our algorithms strictly enforce a $2.2g$ per kg protein minimum. We prioritize muscle tissue preservation above all else during aggressive fat loss.</p>
+<div class="container">
+    <div class="input-card">
+        <div class="type-selector">
+            <div id="btn15" class="type-btn active" onclick="setMode(15, this)">15-DAY PEAK</div>
+            <div id="btn30" class="type-btn" onclick="setMode(30, this)">30-DAY ADVANCED</div>
         </div>
-        <div class="feature-box">
-            <h3>02. Organ Defense</h3>
-            <p>Integrated protocols for Liver and Kidney health. Mandatory TUDCA and Astragalus advisory built into every generated plan.</p>
-        </div>
-        <div class="feature-box">
-            <h3>03. Identity Protocol</h3>
-            <p>Strict Facial Consistency. We lock your identity to your baseline reference to ensure authentic, verifiable transformations.</p>
-        </div>
-    </section>
+        <input type="text" id="custName" placeholder="ATHLETE FULL NAME">
+        <input type="number" id="wt" class="wt-input" placeholder="00">
+        <div style="color: #555; font-size: 0.7rem; margin-bottom: 20px; font-weight: 600;">TARGET BODY WEIGHT (KG)</div>
+        <button class="btn-main" onclick="runMasterEngine()">Execute Adaptive Protocol</button>
+    </div>
 
-    <section id="pricing" class="pricing">
-        <h2>Choose Your Tier</h2>
-        <div class="price-grid">
-            <div class="price-card">
-                <h3>DIGITAL PASS</h3>
-                <div class="price">₹4,999 <span>/ Once</span></div>
-                <p>✓ 30-Day Auto-Gen Shred<br>✓ 7-Day Peak Week Engine<br>✓ Digital Manuals</p>
-                <br>
-                <a href="app.html" class="btn">Get Started</a>
+    <div id="results">
+        <button onclick="exportPDF()" style="width:100%; padding:15px; background:#fff; color:#000; font-weight:900; border-radius:12px; border:none; margin-bottom:20px; cursor:pointer;">📥 DOWNLOAD MASTER PROTOCOL</button>
+        <div id="pdfArea"></div>
+    </div>
+</div>
+
+<script>
+    let currentDays = 15;
+
+    function setMode(days, btn) { 
+        currentDays = days; 
+        document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active')); 
+        btn.classList.add('active'); 
+    }
+
+    function runMasterEngine() {
+        const name = document.getElementById('custName').value.toUpperCase() || "ELITE ATHLETE";
+        const kg = parseFloat(document.getElementById('wt').value);
+        
+        if(!kg || kg <= 0) {
+            alert("Please enter athlete weight.");
+            return;
+        }
+
+        const resultsDiv = document.getElementById('results');
+        const pdfArea = document.getElementById('pdfArea');
+        resultsDiv.style.display = 'block';
+        pdfArea.innerHTML = '';
+
+        // Master Multipliers
+        const protein = Math.round(kg * 2.5);
+        const fats = Math.round(kg * 0.7);
+        let baseCarbs = currentDays === 15 ? kg * 1.5 : kg * 2.5;
+
+        let html = `
+            <div style="background:#000; padding: 20px; text-align:center; border: 2px solid var(--gold); border-radius: 15px; margin-bottom: 30px;">
+                <h2 style="font-family:'Oswald'; color:var(--gold); font-size:2rem; margin:0;">OFFICIAL PROTOCOL</h2>
+                <p style="letter-spacing:2px; font-size:0.8rem;">FOR: ${name} | TARGET WEIGHT: ${kg}KG</p>
             </div>
-            <div class="price-card featured">
-                <h3>PREMIUM 1-ON-1</h3>
-                <div class="price">25k <span>/ Monthly</span></div>
-                <p>✓ All Digital Features<br>✓ **Blood Report Analysis**<br>✓ WhatsApp Access to Coach</p>
-                <br>
-                <a href="https://wa.me/917786888111" class="btn">Apply Now</a>
-            </div>
-        </div>
-    </section>
+        `;
 
-    <footer>
-        <p>© 2026 AZHAR FITNESS CENTER | COACH AZHAR ZAHEER SHAIKH</p>
-        <p>STRICT FACIAL CONSISTENCY PROTOCOL ACTIVE. PRESERVE CORE FACIAL STRUCTURE.</p>
-    </footer>
+        for (let i = 1; i <= currentDays; i++) {
+            let dailyCarbs = Math.round(baseCarbs * Math.pow(currentDays === 15 ? 0.95 : 0.98, i-1));
+            let isRefeed = (currentDays === 30 && i % 7 === 0);
+            
+            if (isRefeed) {
+                dailyCarbs = Math.round(kg * 4); // High carb spike
+            }
 
+            let dailyCals = (protein * 4) + (dailyCarbs * 4) + (fats * 9);
+
+            if (i === 1) {
+                html += `<div class="transition-alert"><h2>PHASE 1: DEPLETION</h2><p>Focus on high-volume training. Increase water intake to 4L+.</p></div>`;
+            } else if (i === Math.round(currentDays * 0.7)) {
+                html += `<div class="transition-alert" style="border-left-color:#4d94ff;"><h2>PHASE 2: THE DRY OUT</h2><p>Limit sodium. Cardio should be LISS only. Muscle fullness is the priority.</p></div>`;
+            }
+
+            html += `
+                <div class="day-block">
+                    <div class="day-header" style="background: ${isRefeed ? '#D4AF37' : '#111'}; color: ${isRefeed ? '#000' : '#fff'};">
+                        <span>DAY ${i} ${isRefeed ? '(RE-FEED)' : ''}</span>
+                        <span style="font-size:0.8rem;">H2O: ${(3 + (i*0.1)).toFixed(1)}L</span>
+                    </div>
+                    <div class="stat-grid">
+                        <div class="stat-item"><b>${dailyCals}</b><br><small>Kcal</small></div>
+                        <div class="stat-item"><b>${protein}G</b><br><small>Pro</small></div>
+                        <div class="stat-item"><b>${dailyCarbs}G</b><br><small>Cho</small></div>
+                        <div class="stat-item"><b>${fats}G</b><br><small>Fat</small></div>
+                    </div>
+                    <table class="nutrition-table">
+                        <tr><td>MEAL 1</td><td>${Math.round(dailyCarbs * 0.3)}g Carbs + 5 Egg Whites</td></tr>
+                        <tr><td>MEAL 2</td><td>${Math.round(dailyCarbs * 0.2)}g Carbs + 150g Chicken</td></tr>
+                        <tr><td>MEAL 3</td><td>PRE-WORKOUT: 1 Apple + Black Coffee</td></tr>
+                        <tr><td>MEAL 4</td><td>${Math.round(dailyCarbs * 0.4)}g Carbs + 150g White Fish</td></tr>
+                        <tr style="border:none;"><td style="color:#4d94ff;">SUPPS</td><td>Omega 3, Zinc, Magnesium, 5g Creatine</td></tr>
+                    </table>
+                </div>
+            `;
+        }
+
+        pdfArea.innerHTML = html;
+        window.scrollTo({ top: resultsDiv.offsetTop, behavior: 'smooth' });
+    }
+
+    function exportPDF() {
+        const element = document.getElementById('pdfArea');
+        const name = document.getElementById('custName').value || "Athlete";
+        html2pdf().set({
+            margin: 10,
+            filename: `AzharFitPro_${name}.pdf`,
+            html2canvas: { scale: 2, backgroundColor: '#050505' },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        }).from(element).save();
+    }
+</script>
 </body>
 </html>
